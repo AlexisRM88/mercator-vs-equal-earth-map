@@ -1,0 +1,45 @@
+/* Embed Mode Minimal Stylesheet */
+body.embed-mode {
+  overflow: hidden;
+  background: #091122;
+}
+
+body.embed-mode .app-wrapper {
+  max-width: 100%;
+  padding: 0.5rem;
+  margin: 0;
+}
+
+body.embed-mode .app-header,
+body.embed-mode .comparisons-section,
+body.embed-mode .un-narrative-section,
+body.embed-mode .app-footer,
+body.embed-mode .slider-hint-banner {
+  display: none !important;
+}
+
+body.embed-mode .controls-bar {
+  margin-bottom: 0.5rem;
+  padding: 0.35rem 0.5rem;
+}
+
+body.embed-mode .map-stage-card {
+  margin-bottom: 0.5rem;
+}
+
+body.embed-mode .embed-attribution-watermark {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.75rem;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.4);
+  text-decoration: none;
+  z-index: 30;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+body.embed-mode .embed-attribution-watermark:hover {
+  color: #fff;
+}

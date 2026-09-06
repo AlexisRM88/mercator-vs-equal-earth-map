@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Equal Earth vs. Mercator Map — UN General Assembly Resolution A/80/L.104</title>
+    <meta
+      name="description"
+      content="Interactive, mathematically rigorous educational comparison between Gerardus Mercator's 1569 conformal projection and the UN-adopted Equal Earth projection (2026)."
+    />
+    <meta name="keywords" content="Equal Earth, Mercator, Cartography, UN Resolution, Map Projections, D3, Education, Open Source" />
+    <meta name="theme-color" content="#0b0f19" />
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Equal Earth vs. Mercator — True World Proportions" />
+    <meta property="og:description" content="Explore real Earth proportions and polar distortion in real time. Celebrating UN Resolution A/80/L.104." />
+    <meta property="og:image" content="./favicon.svg" />
+
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="app-wrapper">
+      <!-- App Header -->
+      <header class="app-header">
+        <div class="header-brand">
+          <div class="un-badge-tag">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span data-i18n="un_badge">Official UN Adopted Map</span>
+          </div>
+          <h1 class="app-title" data-i18n="app_title">Equal Earth vs. Mercator</h1>
+          <p class="app-tagline" data-i18n="app_tagline">UN General Assembly Resolution A/80/L.104 (Sept 4, 2026)</p>
+        </div>
+
+        <div class="header-actions">
+          <button id="btn-switch-lang" class="btn-pill" aria-label="Switch Language">🌐 Español</button>
+          <button id="btn-open-embed" class="btn-pill" data-i18n="embed_button">Embed Map</button>
+          <a
+            href="https://github.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-pill btn-primary"
+            data-i18n="github_repo"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+            </svg>
+            GitHub
+          </a>
+        </div>
+      </header>
+
+      <!-- Controls Bar -->
+      <section class="controls-bar">
+        <div class="mode-selectors">
+          <button class="mode-btn active" data-mode="split" data-i18n="mode_split">Split Slider (50/50)</button>
+          <button class="mode-btn mercator-mode" data-mode="mercator" data-i18n="mode_mercator">Mercator Only (1569)</button>
+          <button class="mode-btn equal-mode" data-mode="equal-earth" data-i18n="mode_equal_earth">Equal Earth Only (2026)</button>
+          <button class="mode-btn" data-mode="morph" data-i18n="mode_morph">Auto Presentation (Fade)</button>
+        </div>
+
+        <div class="aux-toggles">
+          <button id="toggle-graticule" class="toggle-chip active">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+            <span data-i18n="toggle_graticules">Grid (15°)</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Main Map Stage -->
+      <main id="map-stage" class="map-stage-card">
+        <!-- Floating Labels -->
+        <div class="map-legend-bar">
+          <div class="legend-badge badge-mercator">
+            <span class="dot"></span>
+            <span data-i18n="label_mercator_side">MERCATOR (1569) — Conformal / Inflated</span>
+          </div>
+          <div class="legend-badge badge-equal-earth">
+            <span class="dot"></span>
+            <span data-i18n="label_equal_earth_side">EQUAL EARTH (2026) — True Proportions</span>
+          </div>
+        </div>
+
+        <!-- SVG Map Container -->
+        <div id="map-container" class="map-svg-container"></div>
+
+        <!-- Hint banner -->
+        <div class="slider-hint-banner" data-i18n="slider_instruction">
+          Drag slider or use Arrow keys to compare
+        </div>
+      </main>
+
+      <!-- Distortion Inspector -->
+      <section id="distortion-inspector" class="inspector-card"></section>
+
+      <!-- Key Scientific Comparisons -->
+      <section class="comparisons-section">
+        <div class="section-header">
+          <h2 class="section-title" data-i18n="key_comparisons_title">Crucial Scientific Comparisons</h2>
+          <p class="section-subtitle" data-i18n="key_comparisons_subtitle">
+            How Mercator distorts geopolitical perception vs. reality
+          </p>
+        </div>
+        <div id="comparison-cards-container"></div>
+      </section>
+
+      <!-- UN Resolution Historical & Mathematical Narrative -->
+      <section class="un-narrative-section">
+        <div class="narrative-grid">
+          <div class="narrative-text">
+            <h2 class="section-title" data-i18n="un_resolution_title" style="margin-bottom:0.25rem;">Historical Cartographic Milestone</h2>
+            <p class="section-subtitle" data-i18n="un_resolution_subtitle" style="margin-bottom:1rem; color:#34d399;">
+              Resolution A/80/L.104 — Adopted September 4, 2026
+            </p>
+            <p data-i18n="un_resolution_body_1">
+              On September 4, 2026, the United Nations General Assembly officially adopted the Equal Earth projection as the standard world map projection for all official UN publications, educational charts, and geopolitical visualizations.
+            </p>
+            <p data-i18n="un_resolution_body_2">
+              For over four centuries, Gerardus Mercator's 1569 projection dominated maritime navigation because it preserved compass bearings as straight rhumb lines. However, its mathematical formula causes polar landmasses to expand toward infinity, magnifying Europe and North America while drastically shrinking Africa, South America, and the equatorial Global South.
+            </p>
+            <p data-i18n="un_resolution_body_3">
+              Created in 2018 by Bojan Šavrič, Tom Patterson, and Bernhard Jenny, Equal Earth retains an aesthetically pleasing continental curvature while rigorously preserving true relative surface areas across all 193 member states.
+            </p>
+          </div>
+
+          <div class="math-infobox">
+            <h3 class="section-title" style="font-size:1.15rem; margin-bottom:1rem;" data-i18n="math_section_title">Mathematical Foundations</h3>
+
+            <div class="math-box-item">
+              <div class="math-title" style="color:#fb7185;" data-i18n="math_mercator_title">Mercator (1569) — Area Distortion Formula</div>
+              <div class="math-formula">dA_proj / dA_sphere = sec²(φ) = 1 / cos²(φ)</div>
+              <p class="math-desc" data-i18n="math_mercator_desc">
+                Area scales quadratically with the secant of latitude φ. At 60° latitude, land is inflated 400%; at 80°, over 3,300%.
+              </p>
+            </div>
+
+            <div class="math-box-item" style="margin-top:1.25rem;">
+              <div class="math-title" style="color:#34d399;" data-i18n="math_equal_earth_title">Equal Earth (2018) — Pseudocylindrical Equal-Area</div>
+              <div class="math-formula">dA_proj / dA_sphere = 1.0 (Exact Conservation)</div>
+              <p class="math-desc" data-i18n="math_equal_earth_desc">
+                Developed using polynomial equations calibrated to reduce angular distortion while guaranteeing equal-area integrity.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer & Credits -->
+      <footer class="app-footer">
+        <div>
+          <strong data-i18n="footer_text">Free, open-source educational resource under MIT License.</strong>
+          <div class="footer-credits" style="margin-top:0.25rem;">
+            <span data-i18n="credits_authors">Equal Earth Projection created by Bojan Šavrič, Tom Patterson, and Bernhard Jenny (2018).</span>
+            <br />
+            <span data-i18n="credits_un">United Nations Geospatial Information Section & General Assembly Resolution A/80/L.104 (2026).</span>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <span data-i18n="credits_d3">Cartographic rendering powered by D3.js and Natural Earth 110m TopoJSON.</span>
+        </div>
+      </footer>
+    </div>
+
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>
