@@ -96,7 +96,7 @@ You can embed the interactive map with a single HTML `<iframe>` snippet:
 
 ```html
 <iframe
-  src="https://<YOUR-USERNAME>.github.io/<YOUR-REPO>/embed.html?lang=en&mode=split"
+  src="https://alexisrm88.github.io/mercator-vs-equal-earth-map/embed.html?lang=en&mode=split"
   width="100%"
   height="540"
   style="border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; max-width: 960px; display: block; margin: auto;"
@@ -124,7 +124,7 @@ You can embed the interactive map with a single HTML `<iframe>` snippet:
 ### Setup
 ```bash
 # Clone the repository
-git clone https://github.com/<YOUR-USERNAME>/mercator-vs-equal-earth.git
+git clone https://github.com/AlexisRM88/mercator-vs-equal-earth-map.git
 cd mercator-vs-equal-earth
 
 # Install dependencies
